@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent vs Buy Calculator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>Rent vs Buy</h1>
+      <p class="subtitle">Make an informed financial decision</p>
+    </header>
+
+    <div class="main-layout">
+      <!-- Left Sidebar: Controls -->
+      <aside class="sidebar">
+        <div class="sidebar-content">
+          <h2>Your Scenario</h2>
+          
+          <!-- Location -->
+          <div class="form-group">
+            <label for="location">Location (ZIP or City)</label>
+            <input 
+              type="text" 
+              id="location" 
+              class="input-field" 
+              placeholder="e.g., 90210 or Los Angeles"
+              value="90210"
+            >
+            <small>We use this to estimate local market data (currently US only)</small>
+          </div>
+
+          <!-- Purchase Price -->
+          <div class="form-group">
+            <label for="purchasePrice">
+              Purchase Price
+              <span class="value-display">$<span id="purchasePriceValue">350000</span></span>
+            </label>
+            <input 
+              type="range" 
+              id="purchasePrice" 
+              class="slider" 
+              min="50000" 
+              max="1000000" 
+              step="10000"
+              value="350000"
+            >
+            <div class="slider-labels">
+              <span>$50K</span>
+              <span>$1M</span>
+            </div>
+          </div>
+
+          <!-- Down Payment % -->
+          <div class="form-group">
+            <label for="downPaymentPct">
+              Down Payment %
+              <span class="value-display"><span id="downPaymentPctValue">20</span>%</span>
+            </label>
+            <input 
+              type="range" 
+              id="downPaymentPct" 
+              class="slider" 
+              min="5" 
+              max="50" 
+              step="1"
+              value="20"
+            >
+            <div class="slider-labels">
+              <span>5%</span>
+              <span>50%</span>
+            </div>
+          </div>
+
+          <!-- Mortgage Term -->
+          <div class="form-group">
+            <label>Mortgage Term</label>
+            <div class="button-group">
+              <button class="btn-toggle" data-term="10">10 years</button>
+              <button class="btn-toggle" data-term="15">15 years</button>
+              <button class="btn-toggle active" data-term="30">30 years</button>
+            </div>
+            <input type="hidden" id="mortgageTerm" value="30">
+          </div>
+
+          <!-- Mortgage Rate -->
+          <div class="form-group">
+            <label for="mortgageRate">
+              Interest Rate
+              <span class="value-display"><span id="mortgageRateValue">4.0</span>%</span>
+            </label>
+            <input 
+              type="range" 
+              id="mortgageRate" 
+              class="slider" 
+              min="2" 
+              max="8" 
+              step="0.1"
+              value="4.0"
+            >
+            <div class="slider-labels">
+              <span>2%</span>
+              <span>8%</span>
+            </div>
+          </div>
+
+          <!-- Monthly Rent -->
+          <div class="form-group">
+            <label for="monthlyRent">
+              Current Monthly Rent
+              <span class="value-display">$<span id="monthlyRentValue">2000</span></span>
+            </label>
+            <input 
+              type="range" 
+              id="monthlyRent" 
+              class="slider" 
+              min="500" 
+              max="5000" 
+              step="50"
+              value="2000"
+            >
+            <div class="slider-labels">
+              <span>$500</span>
+              <span>$5K</span>
+            </div>
+          </div>
+
+          <!-- Holding Period -->
+          <div class="form-group">
+            <label for="holdingYears">
+              Holding Period
+              <span class="value-display"><span id="holdingYearsValue">7</span> years</span>
+            </label>
+            <input 
+              type="range" 
+              id="holdingYears" 
+              class="slider" 
+              min="1" 
+              max="30" 
+              step="1"
+              value="7"
+            >
+            <div class="slider-labels">
+              <span>1</span>
+              <span>30</span>
+            </div>
+          </div>
+
+          <!-- Expandable: Advanced Options -->
+          <button class="btn-expand" id="btnAdvanced">
+            <span>Advanced Options</span>
+          </button>
+          
+          <div class="advanced-section" id="advancedOptions" style="display: none;">
+            <h3>Property Costs</h3>
+
+            <!-- Property Tax Rate -->
+            <div class="form-group">
+              <label for="propertyTaxRate">
+                Property Tax Rate
+                <span class="value-display"><span id="propertyTaxRateValue">1.2</span>%</span>
+              </label>
+              <input 
+                type="range" 
+                id="propertyTaxRate" 
+                class="slider" 
+                min="0.5" 
+                max="3" 
+                step="0.1"
+                value="1.2"
+              >
+            </div>
+
+            <!-- Insurance Annual -->
+            <div class="form-group">
+              <label for="insuranceAnnual">
+                Annual Insurance
+                <span class="value-display">$<span id="insuranceAnnualValue">1200</span></span>
+              </label>
+              <input 
+                type="range" 
+                id="insuranceAnnual" 
+                class="slider" 
+                min="500" 
+                max="3000" 
+                step="100"
+                value="1200"
+              >
+            </div>
+
+            <!-- Maintenance % -->
+            <div class="form-group">
+              <label for="maintenancePct">
+                Maintenance %
+                <span class="value-display"><span id="maintenancePctValue">1.0</span>%</span>
+              </label>
+              <input 
+                type="range" 
+                id="maintenancePct" 
+                class="slider" 
+                min="0.5" 
+                max="2.5" 
+                step="0.1"
+                value="1.0"
+              >
+            </div>
+
+            <!-- Annual Appreciation -->
+            <div class="form-group">
+              <label for="annualAppreciation">
+                Home Appreciation (Annual)
+                <span class="value-display"><span id="annualAppreciationValue">3.0</span>%</span>
+              </label>
+              <input 
+                type="range" 
+                id="annualAppreciation" 
+                class="slider" 
+                min="0" 
+                max="6" 
+                step="0.5"
+                value="3.0"
+              >
+            </div>
+
+            <h3>Investment Assumptions</h3>
+
+            <!-- Benchmark Return -->
+            <div class="form-group">
+              <label for="benchmarkReturn">
+                Annual Investment Return (CAGR)
+                <span class="value-display"><span id="benchmarkReturnValue">5.5</span>%</span>
+              </label>
+              <input 
+                type="range" 
+                id="benchmarkReturn" 
+                class="slider" 
+                min="2" 
+                max="10" 
+                step="0.1"
+                value="5.5"
+              >
+              <div class="slider-labels">
+                <span>2%</span>
+                <span>10%</span>
+              </div>
+              <small>Assumed for renter's invested portfolio (60% stocks, 40% bonds)</small>
+            </div>
+
+            <h3>Personal Factors</h3>
+
+            <!-- Emotional Value -->
+            <div class="form-group">
+              <label for="emotionalValue">
+                Emotional Value of Ownership
+                <span class="value-display"><span id="emotionalValueValue">3</span>/5</span>
+              </label>
+              <input 
+                type="range" 
+                id="emotionalValue" 
+                class="slider" 
+                min="1" 
+                max="5" 
+                step="1"
+                value="3"
+              >
+              <div class="slider-labels">
+                <span>1 (No preference)</span>
+                <span>5 (Very important)</span>
+              </div>
+              <small>How important is owning a home to you personally? Factors into final recommendation.</small>
+            </div>
+          </div>
+
+          <!-- Assumptions Info -->
+          <div class="assumptions-box">
+            <h3>Key Assumptions</h3>
+            <p><strong>Investment Return:</strong> 5.5% annually (60% equities, 40% bonds)</p>
+            <p><strong>Investable Funds:</strong> Down payment + monthly savings (if renting is cheaper)</p>
+            <p><strong>Tax Treatment:</strong> Mortgage interest deductible; capital gains taxed at sale</p>
+            <button class="btn-modal" id="btnDetailsModal">View Full Assumptions</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content: Results -->
+      <main class="main-content">
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator" style="display: none;">
+          <p>Computing...</p>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel" style="display: none;">
+          <!-- Summary Cards -->
+          <section class="summary-cards">
+            <div class="card">
+              <h3>Buyer Equity</h3>
+              <p class="card-value" id="buyerEquity">—</p>
+              <small>Net proceeds after selling</small>
+            </div>
+            <div class="card">
+              <h3>Renter Portfolio</h3>
+              <p class="card-value" id="renterPortfolio">—</p>
+              <small>Down payment + savings invested</small>
+            </div>
+            <div class="card verdict" id="verdictCard">
+              <h3>Verdict</h3>
+              <p class="card-value" id="verdict">—</p>
+              <small id="verdictDetail">—</small>
+            </div>
+          </section>
+
+          <!-- Charts Section -->
+          <section class="charts-section">
+            <div class="chart-container">
+              <h3>Cumulative Cash Position Over Time</h3>
+              <canvas id="cashflowChart"></canvas>
+            </div>
+          </section>
+
+          <!-- Detailed Breakdown -->
+          <section class="breakdown-section">
+            <h3>Detailed Breakdown</h3>
+            <div class="breakdown-grid">
+              <div class="breakdown-item">
+                <h4>Buyer <span id="buyerYearsLabel"></span></h4>
+                <ul id="buyerBreakdown">
+                  <li>Loading...</li>
+                </ul>
+              </div>
+              <div class="breakdown-item">
+                <h4>Renter <span id="renterYearsLabel"></span></h4>
+                <ul id="renterBreakdown">
+                  <li>Loading...</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Comparison Details -->
+          <section class="comparison-section">
+            <h3>Monthly Cost Comparison</h3>
+            <div class="comparison-table">
+              <div class="row">
+                <span class="label">Rent Payment</span>
+                <span class="value" id="compRent">—</span>
+              </div>
+              <div class="row">
+                <span class="label">Avg. Owning Cost (Mortgage + Taxes + Insurance + Maintenance)</span>
+                <span class="value" id="compOwning">—</span>
+              </div>
+              <div class="row highlight">
+                <span class="label">Monthly Difference</span>
+                <span class="value" id="compDifference">—</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+          <p>Adjust the inputs on the left to see your personalized rent vs. buy comparison.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal: Detailed Assumptions -->
+  <div class="modal" id="assumptionsModal" style="display: none;">
+    <div class="modal-content">
+      <button class="modal-close" id="btnCloseModal">&times;</button>
+      <h2>Full Assumptions & Methodology</h2>
+      
+      <h3>Investment (Renter)</h3>
+      <ul>
+        <li><strong>Benchmark:</strong> 60% equities, 40% bonds (e.g., S&P 500 + bond index)</li>
+        <li><strong>Annual Return:</strong> 5.5% nominal (historical average)</li>
+        <li><strong>Compounding:</strong> Monthly</li>
+        <li><strong>Investable Funds:</strong> Down payment + any positive monthly savings (if renting is cheaper than owning)</li>
+        <li><strong>Tax Treatment:</strong> Long-term capital gains tax applied at sale (~15–20% depending on income bracket)</li>
+      </ul>
+
+      <h3>Home Purchase (Buyer)</h3>
+      <ul>
+        <li><strong>Down Payment:</strong> You specify as a % of purchase price</li>
+        <li><strong>Mortgage:</strong> Amortized deterministically based on rate and term</li>
+        <li><strong>Costs:</strong> Property tax (annual %), insurance (annual $), maintenance (annual % of price)</li>
+        <li><strong>Appreciation:</strong> Annual rate (you specify; default 3%). Sale price = Purchase × (1 + appreciation)^years</li>
+        <li><strong>Selling Costs:</strong> 6% of sale price (realtor commission + fees)</li>
+        <li><strong>Tax Benefit:</strong> Mortgage interest is deductible; property tax is deductible</li>
+      </ul>
+
+      <h3>Comparison Methodology</h3>
+      <ul>
+        <li><strong>Buyer Outcome:</strong> Sale proceeds (price - selling costs - remaining mortgage balance) = equity at sale</li>
+        <li><strong>Renter Outcome:</strong> Down payment and monthly surplus invested at 5.5% annual return = portfolio value</li>
+        <li><strong>Verdict:</strong> Which scenario leaves you with more wealth after the holding period?</li>
+      </ul>
+
+      <h3>Key Limitations & Simplifications</h3>
+      <ul>
+        <li>No inflation adjustment (all figures in today's dollars)</li>
+        <li>Deterministic projections (no Monte Carlo / scenario analysis)</li>
+        <li>Assumes you have funds available to pay rent or own; no credit constraints modeled</li>
+        <li>Property-specific depreciation (e.g., roof replacement) not modeled in detail</li>
+        <li>Rents assumed to grow at inflation rate (3% by default, not editable in this version)</li>
+        <li>No state-specific tax rules or incentives (simplified federal model)</li>
+      </ul>
+
+      <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+        <strong>Disclaimer:</strong> This is a planning tool, not financial advice. Consult a financial advisor for personalized guidance.
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
