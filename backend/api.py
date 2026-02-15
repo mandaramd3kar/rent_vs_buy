@@ -1,4 +1,4 @@
-"""Simple FastAPI backend exposing compare endpoint for RentVsBuy.
+"""Simple FastAPI backend exposing compare endpoint for rent_vs_buy.
 
 This is a minimal API to wire the model into a JSON endpoint for the SPA.
 """
@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from typing import Optional
 from .model import compare_buy_vs_rent_with_investment
 
-app = FastAPI(title="RentVsBuy API")
+app = FastAPI(title="rent_vs_buy API")
 
 # Add CORS middleware to allow frontend requests
 app.add_middleware(

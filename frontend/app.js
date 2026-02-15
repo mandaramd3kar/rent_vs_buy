@@ -1,5 +1,5 @@
 /**
- * RentVsBuy Frontend App
+ * rent_vs_buy Frontend App
  * Handles UI interactions, API calls, and result visualization
  */
 

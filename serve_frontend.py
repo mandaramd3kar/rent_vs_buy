@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple HTTP server to serve the RentVsBuy frontend."""
+"""Simple HTTP server to serve the rent_vs_buy frontend."""
 
 import http.server
 import socketserver

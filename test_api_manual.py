@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Quick manual test of the RentVsBuy model."""
+"""Quick manual test of the rent_vs_buy model."""
 
 import sys
 import os
@@ -29,7 +29,7 @@ test_inputs = {
 
 assumptions = {'benchmark_return': 0.055}
 
-print("Running RentVsBuy comparison...")
+print("Running rent_vs_buy comparison...")
 print(f"Inputs: {json.dumps(test_inputs, indent=2)}")
 print()
 

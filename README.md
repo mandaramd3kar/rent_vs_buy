@@ -1,4 +1,4 @@
-# RentVsBuy
+# rent_vs_buy
 
 Simple Rent vs Buy comparison prototype.
 
@@ -32,7 +32,7 @@ python run_backend.py
 **Option B:** Run uvicorn from the parent directory:
 ```bash
 cd ..
-uvicorn RentVsBuy.backend.api:app --reload --port 8000
+uvicorn rent_vs_buy.backend.api:app --reload --port 8000
 ```
 
 3. Open `frontend/index.html` in a browser and use the `/compare` endpoint for results.

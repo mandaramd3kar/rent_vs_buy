@@ -1,1 +1,1 @@
-"""RentVsBuy package."""
+"""rent_vs_buy package."""

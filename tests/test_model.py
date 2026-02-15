@@ -1,5 +1,5 @@
 import math
-from RentVsBuy.backend.model import compute_future_value, amortization_schedule, compare_buy_vs_rent_with_investment
+from rent_vs_buy.backend.model import compute_future_value, amortization_schedule, compare_buy_vs_rent_with_investment
 
 
 def test_compute_future_value_zero_return():
